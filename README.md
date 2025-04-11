@@ -42,12 +42,19 @@ cp .env.example .env
 Fill in:
 
 ```env
+NODE_ENV=development
+
 PORT=3000
+BACKEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:3000
+
 MONGO_URI=mongodb://localhost:27017/auth-api
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRE=1h
-REFRESH_TOKEN_SECRET=your_refresh_secret
+
+REFRESH_TOKEN_SECRET=your_refresh_token_secret
 REFRESH_TOKEN_EXPIRE=7d
+
 STRIPE_SECRET_KEY=sk_test_...
 ```
 
@@ -81,7 +88,8 @@ docker-compose up --build
 
 | Method | Endpoint           | Description              | Auth      |
 |--------|--------------------|--------------------------|-----------|
-| POST   | `/payment/checkout`| Simulate Stripe payment  | ✅ Bearer |
+| POST   | `/payment/make-payment`| Make a direct Stripe payment  | ✅ Bearer |
+| POST   | `/payment/checkout`| Create a Stripe checkout session | ✅ Bearer |
 
 Use Stripe test card: `pm_card_visa`
 
