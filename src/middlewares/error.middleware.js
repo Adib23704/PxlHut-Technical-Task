@@ -3,8 +3,7 @@ import logger from '../utils/logger.js'
 const errorHandler = (err, req, res, _next) => {
 	logger.error(err.stack)
 
-	const statusCode = res.statusCode === 200 ? 500 : res.statusCode
-	res.status(statusCode).json({
+	res.json({
 		message: err.message,
 		stack: process.env.NODE_ENV === 'production' ? null : err.stack
 	})
