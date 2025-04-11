@@ -13,7 +13,7 @@ const options = {
 		},
 		servers: [
 			{
-				url: `${process.env.BACKEND_URL}:${process.env.PORT || 3000}`
+				url: `${process.env.BACKEND_URL || 'http://localhost:3000'}`
 			}
 		],
 		components: {
