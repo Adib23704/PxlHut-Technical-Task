@@ -7,7 +7,7 @@
 
 import express from 'express'
 
-import { createCheckout } from './payment.controller.js'
+import { makePayment } from './payment.controller.js'
 import { authCheck } from '../../middlewares/auth.middleware.js'
 import { paymentValidation, validateRequest } from '../../middlewares/validation.middleware.js'
 
@@ -15,9 +15,9 @@ const router = express.Router()
 
 /**
  * @swagger
- * /payment/checkout:
+ * /payment/make-payment:
  *   post:
- *     summary: Create a checkout session
+ *     summary: Make a direct payment
  *     tags: [Payment]
  *     security:
  *       - BearerAuth: []
@@ -37,6 +37,6 @@ const router = express.Router()
  *       500:
  *         description: Internal server error
  */
-router.post('/checkout', authCheck, validateRequest(paymentValidation), createCheckout)
+router.post('/make-payment', authCheck, validateRequest(paymentValidation), makePayment)
 
 export default router

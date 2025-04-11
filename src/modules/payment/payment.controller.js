@@ -1,18 +1,29 @@
 import asyncHandler from 'express-async-handler'
 
 import Payment from '../payment/payment.model.js'
+import User from '../user/user.model.js'
 import stripe from '../../config/stripe.js'
 
-const createCheckout = asyncHandler(async (req, res) => {
+const makePayment = asyncHandler(async (req, res) => {
 	const { amount, paymentMethod } = req.body
 
 	try {
+		const user = await User.findById(req.user.id)
+		if (!user) {
+			res.status(404)
+			throw new Error('User not found')
+		}
+
 		const paymentIntent = await stripe.paymentIntents.create({
 			amount: amount * 100,
 			currency: 'usd',
 			payment_method: paymentMethod,
 			confirm: true,
-			description: `Payment for user ${req.user.id}`
+			description: `Payment for user ${user.name} (${user.email})`,
+			automatic_payment_methods: {
+				enabled: true,
+				allow_redirects: 'never'
+			}
 		})
 
 		const payment = await Payment.create({
@@ -36,4 +47,4 @@ const createCheckout = asyncHandler(async (req, res) => {
 	}
 })
 
-export { createCheckout }
+export { makePayment }
