@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 
 import connectDB from './config/db.js'
+import authRoutes from './modules/auth/auth.routes.js'
 
 const app = express()
 
@@ -17,6 +18,8 @@ const limiter = rateLimit({
 	max: 100
 })
 app.use(limiter)
+
+app.use('/auth', authRoutes)
 
 app.get('/', (req, res) => {
 	res.status(200).json({ message: 'API is running' })
