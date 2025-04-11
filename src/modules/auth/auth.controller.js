@@ -9,6 +9,7 @@ const registerUser = asyncHandler(async (req, res) => {
 	const userExists = await User.findOne({ email })
 
 	if (userExists) {
+		res.status(400)
 		throw new Error('User already exists')
 	}
 
@@ -36,6 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
 			}
 		})
 	} else {
+		res.status(400)
 		throw new Error('Invalid user data')
 	}
 })
@@ -65,6 +67,7 @@ const loginUser = asyncHandler(async (req, res) => {
 			}
 		})
 	} else {
+		res.status(401)
 		throw new Error('Invalid email or password')
 	}
 })
@@ -73,15 +76,17 @@ const refreshToken = asyncHandler(async (req, res) => {
 	const { refreshToken } = req.body
 
 	if (!refreshToken) {
+		res.status(401)
 		throw new Error('Refresh token required')
 	}
 
 	try {
 		const decoded = verifyRefreshToken(refreshToken)
-		const user = await User.findById(decoded.id)
+		const user = await User.findById(decoded.id).select('+refreshToken')
 
 		if (!user || user.refreshToken !== refreshToken) {
-			return res.status(403).send('Invalid refresh token')
+			res.status(401)
+			throw new Error('Invalid refresh token')
 		}
 
 		const newToken = generateToken(user._id, user.role)
@@ -98,6 +103,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 		})
 		// eslint-disable-next-line no-unused-vars
 	} catch (error) {
+		res.status(401)
 		throw new Error('Invalid refresh token')
 	}
 })
@@ -113,6 +119,7 @@ const getMe = asyncHandler(async (req, res) => {
 			role: user.role
 		})
 	} else {
+		res.status(404)
 		throw new Error('User not found')
 	}
 })
