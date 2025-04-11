@@ -9,8 +9,7 @@ const registerUser = asyncHandler(async (req, res) => {
 	const userExists = await User.findOne({ email })
 
 	if (userExists) {
-		res.status(400)
-		throw new Error('User already exists')
+		return res.status(400).send('User already exists')
 	}
 
 	const user = await User.create({
@@ -37,8 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
 			}
 		})
 	} else {
-		res.status(400)
-		throw new Error('Invalid user data')
+		res.status(400).send('Invalid user data')
 	}
 })
 
@@ -67,8 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
 			}
 		})
 	} else {
-		res.status(401)
-		throw new Error('Invalid email or password')
+		res.status(401).send('Invalid email or password')
 	}
 })
 
@@ -76,8 +73,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 	const { refreshToken } = req.body
 
 	if (!refreshToken) {
-		res.status(401)
-		throw new Error('Refresh token required')
+		return res.status(401).send('Refresh token required')
 	}
 
 	try {
@@ -85,8 +81,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 		const user = await User.findById(decoded.id).select('+refreshToken')
 
 		if (!user || user.refreshToken !== refreshToken) {
-			res.status(401)
-			throw new Error('Invalid refresh token')
+			return res.status(401).send('Invalid refresh token')
 		}
 
 		const newToken = generateToken(user._id, user.role)
@@ -101,10 +96,9 @@ const refreshToken = asyncHandler(async (req, res) => {
 			tokenExpiresIn: process.env.JWT_EXPIRE,
 			refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRE
 		})
-		// eslint-disable-next-line no-unused-vars
 	} catch (error) {
-		res.status(401)
-		throw new Error('Invalid refresh token')
+		res.status(401).send('Invalid refresh token')
+		throw new Error(`Invalid refresh token: ${error.stack}`)
 	}
 })
 
@@ -119,8 +113,7 @@ const getMe = asyncHandler(async (req, res) => {
 			role: user.role
 		})
 	} else {
-		res.status(404)
-		throw new Error('User not found')
+		res.status(404).send('User not found')
 	}
 })
 

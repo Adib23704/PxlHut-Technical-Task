@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import asyncHandler from 'express-async-handler'
 
 import Payment from '../payment/payment.model.js'
@@ -11,8 +10,7 @@ const makePayment = asyncHandler(async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id)
 		if (!user) {
-			res.status(404)
-			throw new Error('User not found')
+			return res.status(404).send('User not found')
 		}
 
 		const paymentIntent = await stripe.paymentIntents.create({
@@ -42,8 +40,8 @@ const makePayment = asyncHandler(async (req, res) => {
 			clientSecret: paymentIntent.client_secret
 		})
 	} catch (error) {
-		res.status(500)
-		throw new Error('Payment processing failed')
+		res.status(500).send('Payment processing failed')
+		throw new Error(`Payment processing failed: ${error.stack}`)
 	}
 })
 
@@ -73,8 +71,8 @@ const createCheckout = asyncHandler(async (req, res) => {
 
 		res.status(200).json({ url: session.url })
 	} catch (error) {
-		res.status(500)
-		throw new Error('Failed to create checkout session')
+		res.status(500).send('Failed to create checkout session')
+		throw new Error(`Failed to create checkout session: ${error.stack}`)
 	}
 })
 
@@ -110,8 +108,8 @@ const paymentSuccess = asyncHandler(async (req, res) => {
 
 		res.send('<h2>✅ Payment successful and recorded!</h2>')
 	} catch (error) {
-		res.status(500)
-		throw new Error('Failed to process payment success')
+		res.status(500).send('Failed to process payment success')
+		throw new Error(`Failed to process payment success: ${error.stack}`)
 	}
 })
 
