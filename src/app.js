@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 
 import { notFound, errorHandler } from './middlewares/error.middleware.js'
+import requestLogger from './middlewares/logger.middleware.js'
 import connectDB from './config/db.js'
 import authRoutes from './modules/auth/auth.routes.js'
 import paymentRoutes from './modules/payment/payment.routes.js'
@@ -35,6 +36,7 @@ app.use((err, req, res, _next) => {
 
 app.use(notFound)
 app.use(errorHandler)
+app.use(requestLogger)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, async () => {
