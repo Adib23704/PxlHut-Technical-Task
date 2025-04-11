@@ -20,7 +20,7 @@ const router = express.Router()
 
 /**
  * @swagger
- * /register:
+ * /auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -42,7 +42,7 @@ router.post('/register', validateRequest(registerValidation), registerUser)
 
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Log in a user
  *     tags: [Auth]
@@ -67,7 +67,7 @@ router.post('/login', validateRequest(loginValidation), loginUser)
 
 /**
  * @swagger
- * /refresh:
+ * /auth/refresh:
  *   post:
  *     summary: Refresh authentication token
  *     tags: [Auth]
@@ -89,7 +89,7 @@ router.post('/refresh', validateRequest(refreshTokenValidation), refreshToken)
 
 /**
  * @swagger
- * /me:
+ * /auth/me:
  *   get:
  *     summary: Get current user information
  *     tags: [Auth]
