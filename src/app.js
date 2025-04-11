@@ -13,11 +13,12 @@ import swaggerDocs from './config/swagger.js'
 
 const app = express()
 
-app.use('trust proxy', 1)
+app.set('trust proxy', 1)
 
 app.use(cors())
 app.use(helmet())
 app.use(express.json())
+
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000,
