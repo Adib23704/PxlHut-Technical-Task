@@ -8,7 +8,7 @@
 import express from 'express'
 
 import { registerUser, loginUser, getMe, refreshToken } from './auth.controller.js'
-import { authCheck } from '../../middlewares/auth.middleware.js'
+import { authCheck, isAdmin } from '../../middlewares/auth.middleware.js'
 import {
 	validateRequest,
 	registerValidation,
@@ -104,5 +104,27 @@ router.post('/refresh', validateRequest(refreshTokenValidation), refreshToken)
  *         description: Internal server error
  */
 router.get('/me', authCheck, getMe)
+
+/**
+ * @swagger
+ * /auth/admin-test:
+ *   get:
+ *     summary: Test admin access
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Admin access granted
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/admin-test', authCheck, isAdmin, (req, res) => {
+	res.json({ message: 'Welcome admin!' })
+})
 
 export default router

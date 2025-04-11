@@ -19,6 +19,8 @@ const router = express.Router()
  *   post:
  *     summary: Create a checkout session
  *     tags: [Payment]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:

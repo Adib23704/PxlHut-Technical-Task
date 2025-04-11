@@ -25,8 +25,7 @@ const options = {
 				}
 			},
 			schemas
-		},
-		security: [{ BearerAuth: [] }]
+		}
 	},
 	apis: ['./src/modules/**/*.js']
 }
