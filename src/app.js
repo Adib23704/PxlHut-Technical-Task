@@ -1,7 +1,10 @@
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
+
+import connectDB from './config/db.js'
 
 const app = express()
 
@@ -25,6 +28,7 @@ app.use((err, req, res, _next) => {
 })
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+	await connectDB()
 	console.log(`Server running on port ${PORT}`)
 })
