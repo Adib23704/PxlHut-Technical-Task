@@ -13,6 +13,8 @@ import swaggerDocs from './config/swagger.js'
 
 const app = express()
 
+app.use('trust proxy', 1)
+
 app.use(cors())
 app.use(helmet())
 app.use(express.json())
