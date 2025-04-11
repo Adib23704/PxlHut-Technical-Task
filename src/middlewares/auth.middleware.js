@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 
@@ -13,13 +14,11 @@ const authCheck = asyncHandler(async (req, res, next) => {
 			req.user = await User.findById(decoded.id).select('-password')
 			next()
 		} catch (error) {
-			res.status(401).send('Not authorized, token failed')
-			throw new Error(`Not authorized, token failed: ${error.stack}`)
+			throw new Error('Not authorized, token failed')
 		}
 	}
 
 	if (!token) {
-		res.status(401).send('Not authorized, no token')
 		throw new Error('Not authorized, no token')
 	}
 })
@@ -28,7 +27,6 @@ const isAdmin = (req, res, next) => {
 	if (req.user && req.user.role === 'admin') {
 		next()
 	} else {
-		res.status(403).send('Not authorized as an admin')
 		throw new Error('Not authorized as an admin')
 	}
 }

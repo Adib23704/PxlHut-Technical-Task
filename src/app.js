@@ -34,11 +34,6 @@ app.get('/', (req, res) => {
 	res.status(200).json({ message: 'API is running' })
 })
 
-app.use((err, req, res, _next) => {
-	console.error(err.stack)
-	res.status(500).json({ message: 'Something broke!' })
-})
-
 app.use(notFound)
 app.use(errorHandler)
 

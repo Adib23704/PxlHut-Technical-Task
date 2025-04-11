@@ -29,9 +29,9 @@ const createCheckout = asyncHandler(async (req, res) => {
 			payment,
 			clientSecret: paymentIntent.client_secret
 		})
+		// eslint-disable-next-line no-unused-vars
 	} catch (error) {
-		res.status(500).send('Payment processing failed')
-		throw new Error(`Payment processing failed: ${error.stack}`)
+		throw new Error('Payment processing failed')
 	}
 })
 
