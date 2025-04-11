@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit'
 import { notFound, errorHandler } from './middlewares/error.middleware.js'
 import connectDB from './config/db.js'
 import authRoutes from './modules/auth/auth.routes.js'
+import paymentRoutes from './modules/payment/payment.routes.js'
 
 const app = express()
 
@@ -21,6 +22,7 @@ const limiter = rateLimit({
 app.use(limiter)
 
 app.use('/auth', authRoutes)
+app.use('/payment', paymentRoutes)
 
 app.get('/', (req, res) => {
 	res.status(200).json({ message: 'API is running' })
