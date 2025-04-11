@@ -74,22 +74,22 @@ docker-compose up --build
 
 ## 🔐 Auth Endpoints
 
-| Method | Endpoint         | Description             | Auth      |
-|--------|------------------|-------------------------|-----------|
-| POST   | `/auth/register` | Register new user       | ❌        |
-| POST   | `/auth/login`    | Login user              | ❌        |
-| POST   | `/auth/refresh`  | Refresh JWT token       | ❌        |
-| GET    | `/auth/me`       | Get current user        | ✅ Bearer |
-| GET    | `/auth/admin-test` | Test admin access    | ✅ Bearer + Admin |
+| Method | Endpoint           | Description       | Auth              |
+| ------ | ------------------ | ----------------- | ----------------- |
+| POST   | `/auth/register`   | Register new user | ❌                |
+| POST   | `/auth/login`      | Login user        | ❌                |
+| POST   | `/auth/refresh`    | Refresh JWT token | ❌                |
+| GET    | `/auth/me`         | Get current user  | ✅ Bearer         |
+| GET    | `/auth/admin-test` | Test admin access | ✅ Bearer + Admin |
 
 ---
 
 ## 💳 Payment Endpoint
 
-| Method | Endpoint           | Description              | Auth      |
-|--------|--------------------|--------------------------|-----------|
-| POST   | `/payment/make-payment`| Make a direct Stripe payment  | ✅ Bearer |
-| POST   | `/payment/checkout`| Create a Stripe checkout session | ✅ Bearer |
+| Method | Endpoint                | Description                      | Auth      |
+| ------ | ----------------------- | -------------------------------- | --------- |
+| POST   | `/payment/make-payment` | Make a direct Stripe payment     | ✅ Bearer |
+| POST   | `/payment/checkout`     | Create a Stripe checkout session | ✅ Bearer |
 
 Use Stripe test card: `pm_card_visa`
 
