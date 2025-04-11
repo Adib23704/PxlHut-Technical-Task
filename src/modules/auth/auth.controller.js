@@ -59,7 +59,7 @@ const loginUser = asyncHandler(async (req, res) => {
 			}
 		})
 	} else {
-		res.status(401)
+		res.status(403)
 		throw new Error('Invalid email or password')
 	}
 })
@@ -68,7 +68,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 	const { refreshToken } = req.body
 
 	if (!refreshToken) {
-		res.status(401)
+		res.status(403)
 		throw new Error('Refresh token required')
 	}
 
@@ -77,7 +77,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 		const user = await User.findById(decoded.id)
 
 		if (!user || user.refreshToken !== refreshToken) {
-			res.status(401)
+			res.status(403)
 			throw new Error('Invalid refresh token')
 		}
 
@@ -94,7 +94,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 			refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRE
 		})
 	} catch (error) {
-		res.status(401)
+		res.status(403)
 		throw new Error(`Invalid refresh token: ${error.stack}`)
 	}
 })
