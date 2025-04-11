@@ -9,7 +9,7 @@ const registerUser = asyncHandler(async (req, res) => {
 	const userExists = await User.findOne({ email })
 
 	if (userExists) {
-		res.status(400)
+		res.status(400).send('User already exists')
 		throw new Error('User already exists')
 	}
 
@@ -21,15 +21,23 @@ const registerUser = asyncHandler(async (req, res) => {
 	})
 
 	if (user) {
+		const token = generateToken(user._id, user.role)
+		const refreshToken = generateRefreshToken(user._id)
+
 		res.status(201).json({
 			_id: user._id,
 			name: user.name,
 			email: user.email,
 			role: user.role,
-			token: generateToken(user._id, user.role)
+			auth: {
+				token,
+				refreshToken,
+				tokenExpiresIn: process.env.JWT_EXPIRE,
+				refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRE
+			}
 		})
 	} else {
-		res.status(400)
+		res.status(400).send('Invalid user data')
 		throw new Error('Invalid user data')
 	}
 })
@@ -59,7 +67,7 @@ const loginUser = asyncHandler(async (req, res) => {
 			}
 		})
 	} else {
-		res.status(403)
+		res.status(403).send('Invalid credentials')
 		throw new Error('Invalid email or password')
 	}
 })
@@ -68,7 +76,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 	const { refreshToken } = req.body
 
 	if (!refreshToken) {
-		res.status(403)
+		res.status(403).send('Refresh token required')
 		throw new Error('Refresh token required')
 	}
 
@@ -77,7 +85,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 		const user = await User.findById(decoded.id)
 
 		if (!user || user.refreshToken !== refreshToken) {
-			res.status(403)
+			res.status(403).send('Invalid refresh token')
 			throw new Error('Invalid refresh token')
 		}
 
@@ -94,7 +102,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 			refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRE
 		})
 	} catch (error) {
-		res.status(403)
+		res.status(403).send('Invalid refresh token')
 		throw new Error(`Invalid refresh token: ${error.stack}`)
 	}
 })
@@ -110,7 +118,7 @@ const getMe = asyncHandler(async (req, res) => {
 			role: user.role
 		})
 	} else {
-		res.status(404)
+		res.status(404).send('User not found')
 		throw new Error('User not found')
 	}
 })

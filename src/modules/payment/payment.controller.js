@@ -30,9 +30,8 @@ const createCheckout = asyncHandler(async (req, res) => {
 			clientSecret: paymentIntent.client_secret
 		})
 	} catch (error) {
-		console.error(error)
-		res.status(500)
-		throw new Error('Payment processing failed')
+		res.status(500).send('Payment processing failed')
+		throw new Error(`Payment processing failed: ${error.stack}`)
 	}
 })
 

@@ -13,14 +13,13 @@ const authCheck = asyncHandler(async (req, res, next) => {
 			req.user = await User.findById(decoded.id).select('-password')
 			next()
 		} catch (error) {
-			console.error(error)
-			res.status(401)
-			throw new Error('Not authorized, token failed')
+			res.status(401).send('Not authorized, token failed')
+			throw new Error(`Not authorized, token failed: ${error.stack}`)
 		}
 	}
 
 	if (!token) {
-		res.status(401)
+		res.status(401).send('Not authorized, no token')
 		throw new Error('Not authorized, no token')
 	}
 })
@@ -29,7 +28,7 @@ const isAdmin = (req, res, next) => {
 	if (req.user && req.user.role === 'admin') {
 		next()
 	} else {
-		res.status(403)
+		res.status(403).send('Not authorized as an admin')
 		throw new Error('Not authorized as an admin')
 	}
 }
