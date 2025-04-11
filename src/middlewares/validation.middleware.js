@@ -34,9 +34,11 @@ const loginValidation = [
 	body('password').notEmpty().withMessage('Password is required')
 ]
 
+const refreshTokenValidation = [body('refreshToken').notEmpty().withMessage('Refresh token is required')]
+
 const paymentValidation = [
 	body('amount').isNumeric().withMessage('Amount must be a number'),
 	body('paymentMethod').notEmpty().withMessage('Payment method is required')
 ]
 
-export { validateRequest, registerValidation, loginValidation, paymentValidation }
+export { validateRequest, registerValidation, loginValidation, paymentValidation, refreshTokenValidation }

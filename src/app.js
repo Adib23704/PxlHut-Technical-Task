@@ -9,6 +9,7 @@ import requestLogger from './middlewares/logger.middleware.js'
 import connectDB from './config/db.js'
 import authRoutes from './modules/auth/auth.routes.js'
 import paymentRoutes from './modules/payment/payment.routes.js'
+import swaggerDocs from './config/swagger.js'
 
 const app = express()
 
@@ -21,6 +22,10 @@ const limiter = rateLimit({
 	max: 100
 })
 app.use(limiter)
+
+app.use(requestLogger)
+
+swaggerDocs(app)
 
 app.use('/auth', authRoutes)
 app.use('/payment', paymentRoutes)
@@ -36,7 +41,6 @@ app.use((err, req, res, _next) => {
 
 app.use(notFound)
 app.use(errorHandler)
-app.use(requestLogger)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, async () => {
