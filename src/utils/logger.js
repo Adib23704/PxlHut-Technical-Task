@@ -19,7 +19,6 @@ const logger = winston.createLogger({
 		new winston.transports.MongoDB({
 			level: 'error',
 			db: process.env.MONGO_URI,
-			options: { useUnifiedTopology: true },
 			collection: 'logs',
 			capped: true,
 			cappedSize: 10000000 // 10MB
