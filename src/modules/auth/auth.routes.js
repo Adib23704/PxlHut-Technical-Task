@@ -94,7 +94,7 @@ router.post('/refresh', validateRequest(refreshTokenValidation), refreshToken)
  *     summary: Get current user information
  *     tags: [Auth]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: User information retrieved successfully
@@ -112,7 +112,7 @@ router.get('/me', authCheck, getMe)
  *     summary: Test admin access
  *     tags: [Auth]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Admin access granted
